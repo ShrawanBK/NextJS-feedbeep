@@ -3,55 +3,90 @@
 
 import React from 'react';
 import { Clock, User, ExternalLink } from 'lucide-react';
-import { Article } from '../../../shared/types';
-import { Button } from '../../../shared/ui/button';
+import { Article } from '@/shared/types';
+import { Button } from '@/shared/ui/button';
 
 interface ArticleCardProps {
   article: Article;
 }
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    return `${Math.floor(diffInHours / 24)}d ago`;
+  };
+
   return (
-    <article className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
-      {/* Image */}
-      <div className="aspect-video bg-gradient-to-br from-muted to-muted/60 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10"></div>
-        <div className="absolute top-3 left-3">
-          <span className="inline-flex items-center rounded-full bg-primary/90 backdrop-blur-sm px-2 py-1 text-xs font-medium text-primary-foreground">
-            {article.category}
+    <article className="group bg-card rounded-xl border border-border p-6 transition-all duration-200 hover:shadow-lg hover:border-border/60">
+      {/* Article Image */}
+      {article.imageUrl && (
+        <div className="mb-4 overflow-hidden rounded-lg">
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full h-48 object-cover transition-transform duration-200 group-hover:scale-105"
+          />
+        </div>
+      )}
+      
+      {/* Category Badge */}
+      <div className="mb-3">
+        <span className="inline-block px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded-full">
+          {article.category}
+        </span>
+      </div>
+
+      {/* Title */}
+      <h3 className="text-lg font-semibold text-card-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+        {article.title}
+      </h3>
+
+      {/* Excerpt */}
+      <p className="text-muted-foreground mb-4 line-clamp-3 text-sm leading-relaxed">
+        {article.excerpt}
+      </p>
+
+      {/* Meta Information */}
+      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+        <div className="flex items-center space-x-4">
+          <span className="flex items-center">
+            <User className="w-3 h-3 mr-1" />
+            {article.author}
+          </span>
+          <span className="flex items-center">
+            <Clock className="w-3 h-3 mr-1" />
+            {article.readTime} min read
           </span>
         </div>
+        <span>{formatTimeAgo(article.publishedAt)}</span>
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="font-semibold text-lg leading-tight mb-3 group-hover:text-primary transition-colors line-clamp-2">
-          {article.title}
-        </h3>
-
-        <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
-          {article.description}
-        </p>
-
-        {/* Meta */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1">
-              <User className="w-3 h-3" />
-              <span>{article.author}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Clock className="w-3 h-3" />
-              <span>{article.readTime}m read</span>
-            </div>
-          </div>
-
-          <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity h-7 text-xs">
-            Read more
-            <ExternalLink className="w-3 h-3 ml-1" />
-          </Button>
-        </div>
+      {/* Tags */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {article.tags.slice(0, 3).map((tag) => (
+          <span
+            key={tag}
+            className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded-md"
+          >
+            #{tag}
+          </span>
+        ))}
       </div>
+
+      {/* Read More Button */}
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+      >
+        Read More
+        <ExternalLink className="w-3 h-3 ml-2" />
+      </Button>
     </article>
   );
 };

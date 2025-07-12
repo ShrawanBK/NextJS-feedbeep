@@ -1,20 +1,20 @@
 
 'use client';
 
-import React, { useState } from 'react';
-import { Search, Bell, Settings, User, Sun, Moon, Computer, MessageSquare, Menu } from 'lucide-react';
-import { Button } from '../../../shared/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../shared/ui/avatar';
-import { useTheme } from '../../../shared/hooks/use-theme';
+import React from 'react';
+import { Search, Settings, Menu, Sun, Moon, Monitor, MessageSquare } from 'lucide-react';
+import { Button } from '@/shared/ui/button';
+import { useTheme } from '@/shared/hooks/use-theme';
+import { useArticleFiltersStore } from '@/shared/stores/use-article-filters-store';
 
 interface HeaderProps {
   onSettingsClick: () => void;
-  onMenuClick?: () => void;
+  onMenuClick: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onMenuClick }) => {
   const { theme, toggleTheme } = useTheme();
-  const [searchQuery, setSearchQuery] = useState('');
+  const { searchQuery, setSearchQuery } = useArticleFiltersStore();
 
   const getThemeIcon = () => {
     switch (theme) {
@@ -23,31 +23,31 @@ export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onMenuClick }) 
       case 'dark':
         return <Moon className="w-4 h-4" />;
       default:
-        return <Computer className="w-4 h-4" />;
+        return <Monitor className="w-4 h-4" />;
     }
   };
 
   return (
-    <header className="h-16 bg-background border-b border-border px-4 lg:px-6">
-      <div className="flex items-center justify-between h-full max-w-7xl mx-auto">
-        {/* Left side */}
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between px-4">
+        {/* Left side - Logo and Menu */}
         <div className="flex items-center space-x-4">
-          {/* Mobile menu button */}
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
             onClick={onMenuClick}
+            className="lg:hidden rounded-full"
           >
             <Menu className="w-5 h-5" />
           </Button>
-
-          {/* Logo */}
+          
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">N</span>
+              <span className="text-primary-foreground font-bold text-sm">FB</span>
             </div>
-            <span className="font-bold text-lg text-foreground hidden sm:block">NewsHub</span>
+            <h1 className="text-xl font-bold text-foreground hidden sm:block">
+              FeedBeep
+            </h1>
           </div>
         </div>
 
@@ -85,25 +85,15 @@ export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onMenuClick }) 
           <Button variant="ghost" size="icon" className="rounded-full">
             <MessageSquare className="w-4 h-4" />
           </Button>
-
-          <Button variant="ghost" size="icon" className="rounded-full relative">
-            <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full"></span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
+          
+          <Button 
+            variant="ghost" 
+            size="icon" 
             onClick={onSettingsClick}
             className="rounded-full"
           >
             <Settings className="w-4 h-4" />
           </Button>
-
-          <Avatar className="w-8 h-8">
-            <AvatarImage src="/api/placeholder/32/32" alt="User" />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
         </div>
       </div>
     </header>

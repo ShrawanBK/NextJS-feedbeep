@@ -1,5 +1,14 @@
-
 import { Article, Topic } from '../types';
+
+const images = [
+  "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&q=80",
+  "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&q=80",
+  "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&q=80",
+  "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=500&q=80",
+  "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&q=80",
+  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=500&q=80",
+  "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=500&q=80",
+];
 
 export const mockArticles: Article[] = [
   {
@@ -10,7 +19,7 @@ export const mockArticles: Article[] = [
     timestamp: '1 hour ago',
     category: 'Technology',
     readTime: 8,
-    imageUrl: '/api/placeholder/400/200',
+    imageUrl: images[0],
     url: '#',
     featured: true,
   },
@@ -22,7 +31,7 @@ export const mockArticles: Article[] = [
     timestamp: '2 hours ago',
     category: 'Technology',
     readTime: 5,
-    imageUrl: '/api/placeholder/400/200',
+    imageUrl: images[1],
     url: '#',
   },
   {
@@ -33,7 +42,7 @@ export const mockArticles: Article[] = [
     timestamp: '3 hours ago',
     category: 'Business',
     readTime: 4,
-    imageUrl: '/api/placeholder/400/200',
+    imageUrl: images[2],
     url: '#',
   },
   {
@@ -44,6 +53,7 @@ export const mockArticles: Article[] = [
     timestamp: '4 hours ago',
     category: 'Science',
     readTime: 6,
+    imageUrl: images[3],
     url: '#',
   },
   {
@@ -54,6 +64,7 @@ export const mockArticles: Article[] = [
     timestamp: '5 hours ago',
     category: 'Technology',
     readTime: 7,
+    imageUrl: images[4],
     url: '#',
   },
 ];

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -35,7 +34,7 @@ function FeedContent() {
   } = useArticles();
 
   const articles = articlesInfiniteData?.pages.flatMap((page) => page.articles) || [];
-  
+
   const {
     data: featuredArticle,
     isLoading: isLoadingFeatured,
