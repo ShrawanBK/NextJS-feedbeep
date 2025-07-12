@@ -1,43 +1,60 @@
-
-import React, { useState } from 'react';
-import { Home, Bookmark, TrendingUp, Tag, ChevronRight, ChevronDown, X } from 'lucide-react';
-import { Button } from '@/shared/ui/button';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shared/ui/collapsible';
-import { useCategories } from '@/entities/category/hooks/use-categories';
-import { useArticleFiltersStore } from '@/shared/stores/use-article-filters-store';
+import React, { useState } from "react";
+import {
+  Home,
+  Bookmark,
+  TrendingUp,
+  Tag,
+  ChevronRight,
+  ChevronDown,
+  X,
+} from "lucide-react";
+import { Button } from "@/shared/ui/button";
+import { ScrollArea } from "@/shared/ui/scroll-area";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/shared/ui/collapsible";
+import { useCategories } from "@/entities/category/hooks/use-categories";
+import { useArticleFiltersStore } from "@/shared/stores/use-article-filters-store";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const quickFilters = ['Elon Musk', 'Climate Change', 'AI', 'Bitcoin', 'Apple', 'Google'];
+const quickFilters = [
+  "Elon Musk",
+  "Climate Change",
+  "AI",
+  "Bitcoin",
+  "Apple",
+  "Google",
+];
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  isOpen, 
-  onClose
-}) => {
-  const [expandedTopics, setExpandedTopics] = useState<string[]>(['Technology']);
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+  const [expandedTopics, setExpandedTopics] = useState<string[]>([
+    "Technology",
+  ]);
   const { data: categories = [] } = useCategories();
-  const { 
-    filterCategory, 
-    filterSubCategory, 
-    setFilterCategory, 
+  const {
+    filterCategory,
+    filterSubCategory,
+    setFilterCategory,
     setFilterSubCategory,
-    resetFilters 
+    resetFilters,
   } = useArticleFiltersStore();
 
   const toggleTopic = (topicName: string) => {
-    setExpandedTopics(prev => 
+    setExpandedTopics((prev) =>
       prev.includes(topicName)
-        ? prev.filter(name => name !== topicName)
-        : [...prev, topicName]
+        ? prev.filter((name) => name !== topicName)
+        : [...prev, topicName],
     );
   };
 
   const handleMainFilterClick = (filter: string) => {
-    if (filter === 'Home') {
+    if (filter === "Home") {
       resetFilters();
     } else {
       setFilterCategory(filter);
@@ -61,15 +78,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   };
 
-  const isActive = (item: string, type: 'main' | 'category' | 'subcategory') => {
-    if (type === 'main') {
-      if (item === 'Home') return !filterCategory && !filterSubCategory;
+  const isActive = (
+    item: string,
+    type: "main" | "category" | "subcategory",
+  ) => {
+    if (type === "main") {
+      if (item === "Home") return !filterCategory && !filterSubCategory;
       return filterCategory === item && !filterSubCategory;
     }
-    if (type === 'category') {
+    if (type === "category") {
       return filterCategory === item && !filterSubCategory;
     }
-    if (type === 'subcategory') {
+    if (type === "subcategory") {
       return filterSubCategory === item;
     }
     return false;
@@ -79,21 +99,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <>
       {/* Mobile overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
           onClick={onClose}
         />
       )}
-      
+
       {/* Sidebar */}
-      <aside className={`
+      <aside
+        className={`
         fixed lg:relative top-0 lg:top-0 left-0 z-50 h-full w-80 transform border-r border-sidebar-border bg-sidebar-background transition-transform duration-300 ease-in-out
         lg:translate-x-0 lg:flex lg:flex-col
-        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
+        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}
+      >
         {/* Mobile close button */}
         <div className="flex items-center justify-between p-4 border-b border-sidebar-border lg:hidden">
-          <span className="text-lg font-semibold text-sidebar-foreground">Menu</span>
+          <span className="text-lg font-semibold text-sidebar-foreground">
+            Menu
+          </span>
           <Button
             variant="ghost"
             size="sm"
@@ -109,39 +133,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Main Navigation */}
             <div className="space-y-2 mb-6">
               <Button
-                variant={isActive('Home', 'main') ? 'default' : 'ghost'}
+                variant={isActive("Home", "main") ? "default" : "ghost"}
                 className={`w-full justify-start rounded-full transition-colors ${
-                  isActive('Home', 'main')
-                    ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
-                    : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                  isActive("Home", "main")
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 }`}
-                onClick={() => handleMainFilterClick('Home')}
+                onClick={() => handleMainFilterClick("Home")}
               >
                 <Home className="mr-3 h-4 w-4" />
                 Home
               </Button>
-              
+
               <Button
-                variant={isActive('Trending', 'main') ? 'default' : 'ghost'}
+                variant={isActive("Trending", "main") ? "default" : "ghost"}
                 className={`w-full justify-start rounded-full transition-colors ${
-                  isActive('Trending', 'main')
-                    ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
-                    : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                  isActive("Trending", "main")
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 }`}
-                onClick={() => handleMainFilterClick('Trending')}
+                onClick={() => handleMainFilterClick("Trending")}
               >
                 <TrendingUp className="mr-3 h-4 w-4" />
                 Trending
               </Button>
-              
+
               <Button
-                variant={isActive('Read Later', 'main') ? 'default' : 'ghost'}
+                variant={isActive("Read Later", "main") ? "default" : "ghost"}
                 className={`w-full justify-start rounded-full transition-colors ${
-                  isActive('Read Later', 'main')
-                    ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
-                    : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                  isActive("Read Later", "main")
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 }`}
-                onClick={() => handleMainFilterClick('Read Later')}
+                onClick={() => handleMainFilterClick("Read Later")}
               >
                 <Bookmark className="mr-3 h-4 w-4" />
                 Read Later
@@ -164,9 +188,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       <Button
                         variant="ghost"
                         className={`w-full justify-between rounded-full transition-colors ${
-                          isActive(topic.name, 'category')
-                            ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
-                            : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                          isActive(topic.name, "category")
+                            ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                            : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                         }`}
                         onClick={() => handleCategoryClick(topic.name)}
                       >
@@ -188,9 +212,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           variant="ghost"
                           size="sm"
                           className={`w-full justify-start rounded-full ml-6 transition-colors ${
-                            isActive(sub, 'subcategory')
-                              ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
-                              : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
+                            isActive(sub, "subcategory")
+                              ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                              : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
                           }`}
                           onClick={() => handleSubCategoryClick(sub)}
                         >
@@ -215,9 +239,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     variant="outline"
                     size="sm"
                     className={`rounded-full text-xs transition-colors ${
-                      isActive(filter, 'category')
-                        ? 'bg-sidebar-primary text-sidebar-primary-foreground border-sidebar-primary hover:bg-sidebar-primary/90'
-                        : 'border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                      isActive(filter, "category")
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground border-sidebar-primary hover:bg-sidebar-primary/90"
+                        : "border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                     }`}
                     onClick={() => handleCategoryClick(filter)}
                   >

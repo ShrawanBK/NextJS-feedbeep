@@ -1,10 +1,9 @@
+"use client";
 
-'use client';
-
-import React from 'react';
-import { Clock, User, ExternalLink } from 'lucide-react';
-import { Article } from '@/shared/types';
-import { Button } from '@/shared/ui/button';
+import React from "react";
+import { Clock, User, ExternalLink } from "lucide-react";
+import { Article } from "@/shared/types";
+import { Button } from "@/shared/ui/button";
 
 interface ArticleCardProps {
   article: Article;
@@ -14,9 +13,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60),
+    );
+
+    if (diffInHours < 1) return "Just now";
     if (diffInHours < 24) return `${diffInHours}h ago`;
     return `${Math.floor(diffInHours / 24)}d ago`;
   };
@@ -33,7 +34,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           />
         </div>
       )}
-      
+
       {/* Category Badge */}
       <div className="mb-3">
         <span className="inline-block px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded-full">
@@ -47,27 +48,27 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
       </h3>
 
       {/* Excerpt */}
-      <p className="text-muted-foreground mb-4 line-clamp-3 text-sm leading-relaxed">
+      {/* <p className="text-muted-foreground mb-4 line-clamp-3 text-sm leading-relaxed">
         {article.excerpt}
-      </p>
+      </p> */}
 
       {/* Meta Information */}
       <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
         <div className="flex items-center space-x-4">
           <span className="flex items-center">
             <User className="w-3 h-3 mr-1" />
-            {article.author}
+            {/* {article.author} */}
           </span>
           <span className="flex items-center">
             <Clock className="w-3 h-3 mr-1" />
             {article.readTime} min read
           </span>
         </div>
-        <span>{formatTimeAgo(article.publishedAt)}</span>
+        {/* <span>{formatTimeAgo(article.publishedAt)}</span> */}
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      {/* <div className="flex flex-wrap gap-2 mb-4">
         {article.tags.slice(0, 3).map((tag) => (
           <span
             key={tag}
@@ -76,7 +77,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
             #{tag}
           </span>
         ))}
-      </div>
+      </div> */}
 
       {/* Read More Button */}
       <Button

@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Header } from "../../../widgets/header/ui/header";
-import { Sidebar } from "../../../widgets/sidebar/ui/sidebar";
-import { FeaturedArticle } from "../../../widgets/article/ui/featured-article";
-import { ArticleCard } from "../../../widgets/article/ui/article-card";
-import { SettingsPanel } from "../../../widgets/settings/ui/settings-panel";
-import { useArticles } from "../../../entities/article/hooks/use-articles";
-import { useFeaturedArticle } from "../../../entities/article/hooks/use-featured-article";
-import { Button } from "../../../shared/ui/button";
+import { Header } from "@/widgets/header/ui/header";
+import { Sidebar } from "@/widgets/sidebar/ui/sidebar";
+import { FeaturedArticle } from "@/widgets/article/ui/featured-article";
+import { ArticleCard } from "@/widgets/article/ui/article-card";
+import { SettingsPanel } from "@/widgets/settings/ui/settings-panel";
+import { useArticles } from "@/entities/article/hooks/use-articles";
+import { useFeaturedArticle } from "@/entities/article/hooks/use-featured-article";
+import { Button } from "@/shared/ui/button";
 import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient({
@@ -33,7 +33,8 @@ function FeedContent() {
     error: articlesError,
   } = useArticles();
 
-  const articles = articlesInfiniteData?.pages.flatMap((page) => page.articles) || [];
+  const articles =
+    articlesInfiniteData?.pages.flatMap((page) => page.articles) || [];
 
   const {
     data: featuredArticle,
@@ -69,14 +70,14 @@ function FeedContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header 
-        onSettingsClick={() => setIsSettingsOpen(true)} 
+      <Header
+        onSettingsClick={() => setIsSettingsOpen(true)}
         onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
       />
 
       <div className="flex">
-        <Sidebar 
-          isOpen={isSidebarOpen} 
+        <Sidebar
+          isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}

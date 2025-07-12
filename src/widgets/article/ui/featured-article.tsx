@@ -1,21 +1,24 @@
+"use client";
 
-'use client';
-
-import React from 'react';
-import { Clock, User } from 'lucide-react';
-import { Article } from '@/shared/types';
+import React from "react";
+import { Clock, User } from "lucide-react";
+import { Article } from "@/shared/types";
 
 interface FeaturedArticleProps {
   article: Article;
 }
 
-export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
+export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({
+  article,
+}) => {
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60),
+    );
+
+    if (diffInHours < 1) return "Just now";
     if (diffInHours < 24) return `${diffInHours}h ago`;
     return `${Math.floor(diffInHours / 24)}d ago`;
   };
@@ -33,9 +36,11 @@ export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => 
             />
           </div>
         )}
-        
+
         {/* Content */}
-        <div className={`${article.imageUrl ? 'lg:w-1/2' : 'w-full'} flex flex-col justify-center`}>
+        <div
+          className={`${article.imageUrl ? "lg:w-1/2" : "w-full"} flex flex-col justify-center`}
+        >
           {/* Featured Badge */}
           <div className="mb-4">
             <span className="inline-block px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-full">
@@ -56,27 +61,27 @@ export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => 
           </h2>
 
           {/* Excerpt */}
-          <p className="text-muted-foreground mb-6 text-base leading-relaxed">
+          {/* <p className="text-muted-foreground mb-6 text-base leading-relaxed">
             {article.excerpt}
-          </p>
+          </p> */}
 
           {/* Meta Information */}
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-6">
             <div className="flex items-center space-x-6">
               <span className="flex items-center">
                 <User className="w-4 h-4 mr-2" />
-                {article.author}
+                {/* {article.author} */}
               </span>
               <span className="flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
                 {article.readTime} min read
               </span>
             </div>
-            <span>{formatTimeAgo(article.publishedAt)}</span>
+            {/* <span>{formatTimeAgo(article.publishedAt)}</span> */}
           </div>
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2">
+          {/* <div className="flex flex-wrap gap-2">
             {article.tags.map((tag) => (
               <span
                 key={tag}
@@ -85,7 +90,7 @@ export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => 
                 #{tag}
               </span>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </article>
