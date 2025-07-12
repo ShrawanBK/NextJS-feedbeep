@@ -2,53 +2,84 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Bell, Settings, User, Sun, Moon, MessageSquare } from 'lucide-react';
+import { Search, Bell, Settings, User, Sun, Moon, Computer, MessageSquare, Menu } from 'lucide-react';
 import { Button } from '../../../shared/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../shared/ui/avatar';
 import { useTheme } from '../../../shared/hooks/use-theme';
 
 interface HeaderProps {
   onSettingsClick: () => void;
+  onMenuClick?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
+export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onMenuClick }) => {
   const { theme, toggleTheme } = useTheme();
-  const [searchValue, setSearchValue] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const getThemeIcon = () => {
+    switch (theme) {
+      case 'light':
+        return <Sun className="w-4 h-4" />;
+      case 'dark':
+        return <Moon className="w-4 h-4" />;
+      default:
+        return <Computer className="w-4 h-4" />;
+    }
+  };
 
   return (
-    <header className="h-16 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-      <div className="flex items-center justify-between h-full px-6">
-        {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">FB</span>
+    <header className="h-16 bg-background border-b border-border px-4 lg:px-6">
+      <div className="flex items-center justify-between h-full max-w-7xl mx-auto">
+        {/* Left side */}
+        <div className="flex items-center space-x-4">
+          {/* Mobile menu button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={onMenuClick}
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">N</span>
+            </div>
+            <span className="font-bold text-lg text-foreground hidden sm:block">NewsHub</span>
           </div>
-          <span className="font-semibold text-lg text-foreground">FeedBeep</span>
         </div>
 
-        {/* Search */}
-        <div className="flex-1 max-w-md mx-8">
+        {/* Center - Search */}
+        <div className="flex-1 max-w-2xl mx-8 hidden md:block">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search news..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-full border border-input bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+              placeholder="Search articles..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-input rounded-full bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
             />
           </div>
         </div>
 
         {/* Right side actions */}
         <div className="flex items-center space-x-2">
+          {/* Mobile search */}
+          <Button variant="ghost" size="icon" className="md:hidden rounded-full">
+            <Search className="w-4 h-4" />
+          </Button>
+          
           <Button 
             variant="ghost" 
             size="icon"
             onClick={toggleTheme}
             className="rounded-full"
+            title={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} mode`}
           >
-            {theme === 'light' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {getThemeIcon()}
           </Button>
           
           <Button variant="ghost" size="icon" className="rounded-full">
@@ -57,7 +88,16 @@ export const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
 
           <Button variant="ghost" size="icon" className="rounded-full relative">
             <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full"></span>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onSettingsClick}
+            className="rounded-full"
+          >
+            <Settings className="w-4 h-4" />
           </Button>
 
           <Avatar className="w-8 h-8">

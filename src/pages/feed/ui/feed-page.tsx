@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -7,7 +8,8 @@ import { Sidebar } from "../../../widgets/sidebar/ui/sidebar";
 import { FeaturedArticle } from "../../../entities/article/ui/featured-article";
 import { ArticleCard } from "../../../entities/article/ui/article-card";
 import { SettingsPanel } from "../../../widgets/settings/ui/settings-panel";
-import { useArticles, useFeaturedArticle } from "../../../shared/api/articles";
+import { useArticles } from "../../../shared/hooks/use-articles";
+import { useFeaturedArticle } from "../../../shared/hooks/use-featured-article";
 import { Button } from "../../../shared/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -15,7 +17,6 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
-      // cacheTime: 1000 * 60 * 10,
       retry: 2,
       refetchOnWindowFocus: false,
     },
@@ -24,6 +25,7 @@ const queryClient = new QueryClient({
 
 function FeedContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {
     data: articlesInfiniteData,
     isLoading: isLoadingArticles,
@@ -65,15 +67,21 @@ function FeedContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header onSettingsClick={() => setIsSettingsOpen(true)} />
+      <Header 
+        onSettingsClick={() => setIsSettingsOpen(true)} 
+        onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
 
       <div className="flex">
-        <Sidebar />
+        <Sidebar 
+          isOpen={isSidebarOpen} 
+          onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        />
 
-        <main className="flex-1 max-w-4xl mx-auto p-8">
+        <main className="flex-1 max-w-4xl mx-auto p-4 lg:p-8">
           {/* Welcome Message */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
               Good morning! Here's your news feed
             </h1>
             <p className="text-muted-foreground">

@@ -1,18 +1,15 @@
 
 import { useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark' | 'auto';
+type Theme = 'light' | 'dark' | 'system';
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('system');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
       setTheme(savedTheme);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
     }
   }, []);
 
@@ -20,16 +17,31 @@ export const useTheme = () => {
     const root = document.documentElement;
     
     if (theme === 'dark') {
-      root.setAttribute('data-theme', 'dark');
+      root.classList.add('dark');
     } else if (theme === 'light') {
-      root.setAttribute('data-theme', 'light');
+      root.classList.remove('dark');
     } else {
+      // system theme
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      if (prefersDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
     }
     
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  return { theme, setTheme };
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else if (theme === 'dark') {
+      setTheme('system');
+    } else {
+      setTheme('light');
+    }
+  };
+
+  return { theme, setTheme, toggleTheme };
 };

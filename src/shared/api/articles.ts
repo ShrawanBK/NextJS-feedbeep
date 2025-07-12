@@ -21,6 +21,11 @@ export const fetchArticles = async (
   };
 };
 
+export const fetchFeaturedArticle = async (): Promise<Article> => {
+  await delay(500);
+  return mockArticles.find((article) => article.featured) || mockArticles[0];
+};
+
 export const useArticles = () => {
   return useInfiniteQuery({
     queryKey: ["articles"],
@@ -36,10 +41,7 @@ export const useFeaturedArticle = () => {
   return useQuery({
     queryKey: ["featured-article"],
     queryFn: async () => {
-      await delay(500);
-      return (
-        mockArticles.find((article) => article.featured) || mockArticles[0]
-      );
+      return fetchFeaturedArticle();
     },
   });
 };
