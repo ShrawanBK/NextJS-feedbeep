@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Header } from "../../../widgets/header/ui/header";
 import { Sidebar } from "../../../widgets/sidebar/ui/sidebar";
-import { FeaturedArticle } from "../../../entities/article/ui/featured-article";
-import { ArticleCard } from "../../../entities/article/ui/article-card";
+import { FeaturedArticle } from "../../../widgets/article/ui/featured-article";
+import { ArticleCard } from "../../../widgets/article/ui/article-card";
 import { SettingsPanel } from "../../../widgets/settings/ui/settings-panel";
-import { useArticles } from "../../../shared/hooks/use-articles";
-import { useFeaturedArticle } from "../../../shared/hooks/use-featured-article";
+import { useArticles } from "../../../entities/article/hooks/use-articles";
+import { useFeaturedArticle } from "../../../entities/article/hooks/use-featured-article";
 import { Button } from "../../../shared/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -26,13 +26,16 @@ const queryClient = new QueryClient({
 function FeedContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("Home");
+
   const {
     data: articlesInfiniteData,
     isLoading: isLoadingArticles,
     error: articlesError,
   } = useArticles();
 
-  const articles = articlesInfiniteData?.pages.flatMap((page) => page.articles);
+  const articles = articlesInfiniteData?.pages.flatMap((page) => page.articles) || [];
+  
   const {
     data: featuredArticle,
     isLoading: isLoadingFeatured,
@@ -75,17 +78,19 @@ function FeedContent() {
       <div className="flex">
         <Sidebar 
           isOpen={isSidebarOpen} 
-          onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+          onClose={() => setIsSidebarOpen(false)}
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
         />
 
-        <main className="flex-1 max-w-4xl mx-auto p-4 lg:p-8">
+        <main className="flex-1 max-w-4xl mx-auto p-4 lg:p-8 lg:ml-0">
           {/* Welcome Message */}
           <div className="mb-8">
             <h1 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
               Good morning! Here's your news feed
             </h1>
             <p className="text-muted-foreground">
-              {articles?.length || 0} articles found
+              {articles.length} articles found • {activeFilter}
             </p>
           </div>
 
@@ -94,7 +99,7 @@ function FeedContent() {
 
           {/* Articles Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {articles?.map((article) => (
+            {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>
