@@ -1,7 +1,4 @@
-` tags, ensuring that no parts are skipped, indentation is preserved, and no forbidden words are included.
 
-```typescript
-<replit_final_file>
 'use client';
 
 import React, { useState } from 'react';
