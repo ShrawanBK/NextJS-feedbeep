@@ -1,0 +1,198 @@
+
+import React from 'react';
+import { Home, Bookmark, TrendingUp, Tag, ChevronRight, ChevronDown, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { useState } from 'react';
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  activeFilter: string;
+  onFilterChange: (filter: string) => void;
+}
+
+const topics = [
+  {
+    name: 'Technology',
+    icon: Tag,
+    subcategories: ['AI & Machine Learning', 'Gadgets', 'Startups', 'Software', 'Cybersecurity']
+  },
+  {
+    name: 'Business',
+    icon: Tag,
+    subcategories: ['Markets', 'Startups', 'Personal Finance', 'Cryptocurrency', 'Economy']
+  },
+  {
+    name: 'Science',
+    icon: Tag,
+    subcategories: ['Space', 'Health', 'Environment', 'Research', 'Climate']
+  },
+  {
+    name: 'Politics',
+    icon: Tag,
+    subcategories: ['Elections', 'Policy', 'International', 'Local News']
+  },
+  {
+    name: 'Sports',
+    icon: Tag,
+    subcategories: ['Football', 'Basketball', 'Soccer', 'Olympics', 'E-Sports']
+  }
+];
+
+const quickFilters = ['Elon Musk', 'Climate Change', 'AI', 'Bitcoin', 'Apple', 'Google'];
+
+const Sidebar = ({ isOpen, onClose, activeFilter, onFilterChange }: SidebarProps) => {
+  const [expandedTopics, setExpandedTopics] = useState<string[]>(['Technology']);
+
+  const toggleTopic = (topicName: string) => {
+    setExpandedTopics(prev => 
+      prev.includes(topicName)
+        ? prev.filter(name => name !== topicName)
+        : [...prev, topicName]
+    );
+  };
+
+  const handleFilterClick = (filter: string) => {
+    onFilterChange(filter);
+    if (window.innerWidth < 1024) {
+      onClose(); // Close sidebar on mobile after selection
+    }
+  };
+
+  return (
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside className={`
+        fixed lg:relative top-0 lg:top-0 left-0 z-50 h-full w-80 transform border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-transform duration-300 ease-in-out
+        lg:translate-x-0 lg:flex lg:flex-col
+        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        {/* Mobile close button */}
+        <div className="flex items-center justify-between p-4 border-b dark:border-gray-700 lg:hidden">
+          <span className="text-lg font-semibold dark:text-white">Menu</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="rounded-full"
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
+
+        <ScrollArea className="flex-1">
+          <div className="p-4">
+            {/* Main Navigation */}
+            <div className="space-y-2 mb-6">
+              <Button
+                variant={activeFilter === 'Home' ? 'default' : 'ghost'}
+                className="w-full justify-start rounded-full"
+                onClick={() => handleFilterClick('Home')}
+              >
+                <Home className="mr-3 h-4 w-4" />
+                Home
+              </Button>
+              
+              <Button
+                variant={activeFilter === 'Trending' ? 'default' : 'ghost'}
+                className="w-full justify-start rounded-full"
+                onClick={() => handleFilterClick('Trending')}
+              >
+                <TrendingUp className="mr-3 h-4 w-4" />
+                Trending
+              </Button>
+              
+              <Button
+                variant={activeFilter === 'Read Later' ? 'default' : 'ghost'}
+                className="w-full justify-start rounded-full"
+                onClick={() => handleFilterClick('Read Later')}
+              >
+                <Bookmark className="mr-3 h-4 w-4" />
+                Read Later
+              </Button>
+            </div>
+
+            {/* Topics */}
+            <div className="mb-6">
+              <h3 className="mb-3 text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                Topics
+              </h3>
+              <div className="space-y-1">
+                {topics.map((topic) => (
+                  <Collapsible
+                    key={topic.name}
+                    open={expandedTopics.includes(topic.name)}
+                    onOpenChange={() => toggleTopic(topic.name)}
+                  >
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant={activeFilter === topic.name ? 'default' : 'ghost'}
+                        className="w-full justify-between rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                        onClick={() => handleFilterClick(topic.name)}
+                      >
+                        <div className="flex items-center">
+                          <topic.icon className="mr-3 h-4 w-4" />
+                          {topic.name}
+                        </div>
+                        {expandedTopics.includes(topic.name) ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="space-y-1">
+                      {topic.subcategories.map((sub) => (
+                        <Button
+                          key={sub}
+                          variant={activeFilter === sub ? 'default' : 'ghost'}
+                          size="sm"
+                          className="w-full justify-start rounded-full ml-6 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                          onClick={() => handleFilterClick(sub)}
+                        >
+                          {sub}
+                        </Button>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Filters */}
+            <div>
+              <h3 className="mb-3 text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                Quick Filters
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {quickFilters.map((filter) => (
+                  <Button
+                    key={filter}
+                    variant={activeFilter === filter ? 'default' : 'outline'}
+                    size="sm"
+                    className="rounded-full text-xs"
+                    onClick={() => handleFilterClick(filter)}
+                  >
+                    {filter}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </ScrollArea>
+      </aside>
+    </>
+  );
+};
+
+export default Sidebar;
