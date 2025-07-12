@@ -2,9 +2,8 @@
 'use client';
 
 import React from 'react';
-import { Clock, ExternalLink, Bookmark, Share2, Volume2 } from 'lucide-react';
+import { Clock, User } from 'lucide-react';
 import { Article } from '../../../shared/types';
-import { Button } from '../../../shared/ui/button';
 
 interface FeaturedArticleProps {
   article: Article;
@@ -12,49 +11,48 @@ interface FeaturedArticleProps {
 
 export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
   return (
-    <article className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white mb-8">
-      <div className="absolute inset-0 bg-black/20" />
-      <div className="relative p-8">
-        <div className="mb-4">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 backdrop-blur-sm">
-            Featured Story
-          </span>
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 p-8 text-white mb-8">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+        <svg className="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="white" strokeWidth="0.5" opacity="0.3"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
+
+      <div className="relative z-10">
+        <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-xs font-medium mb-4">
+          Featured Story
         </div>
         
-        <h1 className="text-3xl font-bold mb-4 leading-tight">
+        <h1 className="text-3xl font-bold leading-tight mb-4 max-w-3xl">
           {article.title}
         </h1>
         
-        <p className="text-lg text-white/90 mb-6 leading-relaxed max-w-3xl">
-          {article.summary}
+        <p className="text-blue-100 text-lg leading-relaxed mb-6 max-w-2xl">
+          {article.description}
         </p>
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 text-sm text-white/80">
-            <span className="font-medium">{article.source}</span>
-            <span>{article.timestamp}</span>
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              <span>{article.readTime} min read</span>
-            </div>
+        <div className="flex items-center space-x-6 text-sm text-blue-100">
+          <div className="flex items-center space-x-2">
+            <User className="w-4 h-4" />
+            <span>{article.author}</span>
           </div>
-
-          <div className="flex items-center gap-2">
-            <Button variant="secondary" size="sm">
-              <Volume2 className="w-4 h-4 mr-2" />
-              Listen
-            </Button>
-            <Button variant="secondary" size="sm">
-              <Bookmark className="w-4 h-4 mr-2" />
-              Save
-            </Button>
-            <Button variant="secondary" size="sm">
-              <Share2 className="w-4 h-4 mr-2" />
-              Share
-            </Button>
+          <div className="flex items-center space-x-2">
+            <Clock className="w-4 h-4" />
+            <span>{article.publishedAt}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span>•</span>
+            <span>{article.readTime} min read</span>
           </div>
         </div>
       </div>
-    </article>
+    </div>
   );
 };

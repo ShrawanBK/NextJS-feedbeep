@@ -2,12 +2,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { TrendingUp, Bookmark, ChevronDown, ChevronRight, Tag } from 'lucide-react';
+import { Home, TrendingUp, Bookmark, ChevronDown, ChevronRight, Tag, Hash } from 'lucide-react';
 import { mockTopics, quickFilters } from '../../../shared/api/mock-data';
 import { Button } from '../../../shared/ui/button';
+import { Separator } from '../../../shared/ui/separator';
 
 export const Sidebar: React.FC = () => {
   const [expandedTopics, setExpandedTopics] = useState<string[]>(['technology']);
+  const [activeNav, setActiveNav] = useState('home');
 
   const toggleTopic = (topicId: string) => {
     setExpandedTopics(prev =>
@@ -18,80 +20,80 @@ export const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 h-[calc(100vh-4rem)] overflow-y-auto border-r border-border bg-background">
-      <div className="p-4 space-y-6">
-        {/* Navigation */}
-        <nav className="space-y-2">
-          <Button variant="ghost" className="w-full justify-start">
-            <TrendingUp className="w-4 h-4 mr-3" />
-            Trending
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Bookmark className="w-4 h-4 mr-3" />
-            Read Later
-          </Button>
-        </nav>
+    <aside className="w-72 h-[calc(100vh-4rem)] bg-background border-r border-border">
+      <div className="flex flex-col h-full">
+        <div className="p-4 space-y-4">
+          {/* Main Navigation */}
+          <nav className="space-y-1">
+            <Button 
+              variant={activeNav === 'home' ? 'default' : 'ghost'} 
+              className="w-full justify-start h-10 rounded-full font-medium"
+              onClick={() => setActiveNav('home')}
+            >
+              <Home className="w-4 h-4 mr-3" />
+              Home
+            </Button>
+            <Button 
+              variant={activeNav === 'trending' ? 'secondary' : 'ghost'} 
+              className="w-full justify-start h-10 rounded-full"
+              onClick={() => setActiveNav('trending')}
+            >
+              <TrendingUp className="w-4 h-4 mr-3" />
+              Trending
+            </Button>
+            <Button 
+              variant={activeNav === 'saved' ? 'secondary' : 'ghost'} 
+              className="w-full justify-start h-10 rounded-full"
+              onClick={() => setActiveNav('saved')}
+            >
+              <Bookmark className="w-4 h-4 mr-3" />
+              Read Later
+            </Button>
+          </nav>
 
-        {/* Topics */}
-        <div>
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Topics
-          </h3>
-          <div className="space-y-1">
-            {mockTopics.map((topic) => (
-              <div key={topic.id}>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => toggleTopic(topic.id)}
-                >
-                  <Tag className="w-4 h-4 mr-3" />
-                  <span className="flex-1 text-left">{topic.name}</span>
-                  {topic.subcategories && (
-                    expandedTopics.includes(topic.id) ? (
-                      <ChevronDown className="w-4 h-4" />
+          <Separator />
+
+          {/* Topics Section */}
+          <div>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-3">
+              TOPICS
+            </h3>
+            <div className="space-y-1">
+              {mockTopics.map((topic) => (
+                <div key={topic.id} className="space-y-1">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between h-9 rounded-lg text-sm font-medium"
+                    onClick={() => toggleTopic(topic.id)}
+                  >
+                    <div className="flex items-center">
+                      <Hash className="w-3 h-3 mr-3 text-muted-foreground" />
+                      {topic.name}
+                    </div>
+                    {expandedTopics.includes(topic.id) ? (
+                      <ChevronDown className="w-3 h-3" />
                     ) : (
-                      <ChevronRight className="w-4 h-4" />
-                    )
+                      <ChevronRight className="w-3 h-3" />
+                    )}
+                  </Button>
+                  
+                  {expandedTopics.includes(topic.id) && topic.subcategories && (
+                    <div className="ml-6 space-y-1">
+                      {topic.subcategories.map((sub) => (
+                        <Button
+                          key={sub}
+                          variant="ghost"
+                          size="sm"
+                          className="w-full justify-start h-8 rounded-md text-xs text-muted-foreground hover:text-foreground"
+                        >
+                          {sub}
+                        </Button>
+                      ))}
+                    </div>
                   )}
-                </Button>
-                
-                {/* Subcategories */}
-                {topic.subcategories && expandedTopics.includes(topic.id) && (
-                  <div className="ml-6 mt-1 space-y-1">
-                    {topic.subcategories.map((subcategory) => (
-                      <Button
-                        key={subcategory}
-                        variant="ghost"
-                        size="sm"
-                        className="w-full justify-start text-muted-foreground hover:text-foreground"
-                      >
-                        {subcategory}
-                      </Button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Quick Filters */}
-        <div>
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Quick Filters
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {quickFilters.map((filter) => (
-              <Button
-                key={filter}
-                variant="outline"
-                size="sm"
-                className="text-xs"
-              >
-                {filter}
-              </Button>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,7 @@
+` tags, ensuring that no parts are skipped, indentation is preserved, and no forbidden words are included.
 
+```typescript
+<replit_final_file>
 'use client';
 
 import React, { useState } from 'react';
@@ -23,89 +26,75 @@ const queryClient = new QueryClient({
   },
 });
 
-const FeedContent: React.FC = () => {
+function FeedContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const { data: featuredArticle, isLoading: isFeaturedLoading } = useFeaturedArticle();
-  const {
-    data: articlesData,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading: isArticlesLoading,
-  } = useArticles();
+  const { data: articles, isLoading: isLoadingArticles, error: articlesError } = useArticles();
+  const { data: featuredArticle, isLoading: isLoadingFeatured, error: featuredError } = useFeaturedArticle();
 
-  const allArticles = articlesData?.pages.flatMap(page => page.articles) || [];
+  if (isLoadingArticles || isLoadingFeatured) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+          <p className="text-muted-foreground">Loading your personalized feed...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (articlesError || featuredError) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-destructive mb-4">Failed to load articles</p>
+          <Button variant="outline" onClick={() => window.location.reload()}>
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <Header onSettingsClick={() => setIsSettingsOpen(true)} />
-      
+
       <div className="flex">
         <Sidebar />
-        
-        <main className="flex-1 p-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-foreground mb-2">
-                Good morning! Here's your news feed
-              </h1>
-              <p className="text-muted-foreground">
-                {allArticles.length} articles found
-              </p>
-            </div>
 
-            {/* Featured Article */}
-            {isFeaturedLoading ? (
-              <div className="flex items-center justify-center h-64 card rounded-2xl mb-8">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-              </div>
-            ) : featuredArticle ? (
-              <FeaturedArticle article={featuredArticle} />
-            ) : null}
+        <main className="flex-1 max-w-4xl mx-auto p-8">
+          {/* Welcome Message */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Good morning! Here's your news feed
+            </h1>
+            <p className="text-muted-foreground">
+              {articles?.length || 0} articles found
+            </p>
+          </div>
 
-            {/* Articles Grid */}
-            {isArticlesLoading ? (
-              <div className="flex items-center justify-center h-64">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-              </div>
-            ) : (
-              <div className="grid gap-6 md:grid-cols-2">
-                {allArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </div>
-            )}
+          {/* Featured Article */}
+          {featuredArticle && (
+            <FeaturedArticle article={featuredArticle} />
+          )}
 
-            {/* Load More */}
-            {hasNextPage && (
-              <div className="text-center mt-8">
-                <Button
-                  onClick={() => fetchNextPage()}
-                  disabled={isFetchingNextPage}
-                  className="min-w-32"
-                >
-                  {isFetchingNextPage ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Loading...
-                    </>
-                  ) : (
-                    'Load More'
-                  )}
-                </Button>
-              </div>
-            )}
+          {/* Articles Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {articles?.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
           </div>
         </main>
       </div>
 
-      <SettingsPanel
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
+      {/* Settings Panel */}
+      <SettingsPanel 
+        isOpen={isSettingsOpen} 
+        onClose={() => setIsSettingsOpen(false)} 
       />
     </div>
   );
-};
+}
 
 export const FeedPage: React.FC = () => {
   return (
