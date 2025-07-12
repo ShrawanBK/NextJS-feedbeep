@@ -28,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onMenuClick }) 
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background backdrop-blur-sm">
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Left side - Logo and Menu */}
         <div className="flex items-center space-x-4">
