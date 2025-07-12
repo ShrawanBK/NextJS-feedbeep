@@ -5,3 +5,12 @@ export function GET() {
     message: "Hello, world!",
   });
 }
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  return NextResponse.json({
+    message: 'FeedBeep API is running',
+    timestamp: new Date().toISOString(),
+    articles: 8
+  });
+}
