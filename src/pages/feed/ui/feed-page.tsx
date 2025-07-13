@@ -79,15 +79,13 @@ function FeedContent() {
         <Sidebar
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
-          activeFilter={activeFilter}
-          onFilterChange={setActiveFilter}
         />
 
         <main className="flex-1 max-w-4xl mx-auto p-4 lg:p-8 lg:ml-0">
           {/* Welcome Message */}
           <div className="mb-8">
             <h1 className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
-              Good morning! Here's your news feed
+              Good morning! Here&apos;s your news feed
             </h1>
             <p className="text-muted-foreground">
               {articles.length} articles found • {activeFilter}

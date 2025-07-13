@@ -1,0 +1,12 @@
+#nextjs
+/.next
+/out/
+
+#dependencies
+/node_modules
+
+#production
+/build/
+
+#env files
+.env
