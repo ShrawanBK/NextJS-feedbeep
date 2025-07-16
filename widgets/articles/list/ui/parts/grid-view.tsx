@@ -16,7 +16,11 @@ export const GridView = ({ data, isLoading }: Props) => {
           <ArticleCard key={article.id} article={article} />
         ))}
       </div>
-      {isLoading && <ArticleGridSkeleton />}
+      {isLoading && (
+        <div className="mt-6 flex justify-center">
+          <ArticleGridSkeleton />
+        </div>
+      )}
     </>
   );
 };

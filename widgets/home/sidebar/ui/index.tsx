@@ -41,16 +41,21 @@ const quickFilters = [
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { data: categories = [] } = useCategories();
   const {
+    filterMain,
     filterCategory,
     filterSubCategory,
+    setFilterMain,
     setFilterCategory,
     setFilterSubCategory,
-    resetFilters,
   } = useArticleFiltersStore();
 
-  const [expandedTopics, setExpandedTopics] = useState<string[]>([
-    "Technology",
-  ]);
+  const [expandedTopics, setExpandedTopics] = useState<string[]>(
+    filterCategory
+      ? [filterCategory]
+      : categories.length > 0
+        ? [categories[0].name]
+        : []
+  );
 
   const toggleTopic = (topicName: string) => {
     setExpandedTopics((prev) =>
@@ -61,11 +66,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   };
 
   const handleMainFilterClick = (filter: string) => {
-    if (filter === "Home") {
-      resetFilters();
-    } else {
-      setFilterCategory(filter);
-    }
+    setFilterMain(filter);
     if (window.innerWidth < 1024) {
       onClose();
     }
@@ -88,8 +89,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const isActive = useCallback(
     (item: string, type: "main" | "category" | "subcategory") => {
       if (type === "main") {
-        if (item === "Home") return !filterCategory && !filterSubCategory;
-        return filterCategory === item && !filterSubCategory;
+        return filterMain === item && !filterCategory && !filterSubCategory;
       }
       if (type === "category") {
         return filterCategory === item && !filterSubCategory;
@@ -99,7 +99,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       }
       return false;
     },
-    [filterCategory, filterSubCategory]
+    [filterCategory, filterMain, filterSubCategory]
   );
 
   return (

@@ -14,7 +14,7 @@ const LoadMoreArticleButton = ({ onClick, loading, disabled }: Props) => {
       size="lg"
       className="rounded-full bg-blue-600 px-8 py-3 font-medium text-white hover:bg-blue-700"
     >
-      {loading ? "Loading..." : "Load More Stories"}
+      {loading ? "Loading..." : "Load More Articles"}
     </Button>
   );
 };
