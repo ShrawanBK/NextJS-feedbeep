@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { Clock, User, ExternalLink } from "lucide-react";
-import { Article } from "@/shared/types";
-import { Button } from "@/shared/ui/button";
+import { User, Clock, ExternalLink } from "lucide-react";
+
+import { Button } from "@/shared/rui/button";
+import type { Article } from "@/src/shared/types";
 
 interface ArticleCardProps {
   article: Article;
@@ -14,7 +15,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60),
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
     );
 
     if (diffInHours < 1) return "Just now";
@@ -23,27 +24,27 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   };
 
   return (
-    <article className="group bg-card rounded-xl border border-border p-6 transition-all duration-200 hover:shadow-lg hover:border-border/60">
+    <article className="group bg-card border-border hover:border-border/60 rounded-xl border p-6 transition-all duration-200 hover:shadow-lg">
       {/* Article Image */}
       {article.imageUrl && (
         <div className="mb-4 overflow-hidden rounded-lg">
           <img
             src={article.imageUrl}
             alt={article.title}
-            className="w-full h-48 object-cover transition-transform duration-200 group-hover:scale-105"
+            className="h-48 w-full object-cover transition-transform duration-200 group-hover:scale-105"
           />
         </div>
       )}
 
       {/* Category Badge */}
       <div className="mb-3">
-        <span className="inline-block px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded-full">
+        <span className="bg-secondary text-secondary-foreground inline-block rounded-full px-3 py-1 text-xs font-medium">
           {article.category}
         </span>
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-card-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+      <h3 className="text-card-foreground group-hover:text-primary mb-3 line-clamp-2 text-lg font-semibold transition-colors">
         {article.title}
       </h3>
 
@@ -53,14 +54,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
       </p> */}
 
       {/* Meta Information */}
-      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+      <div className="text-muted-foreground mb-4 flex items-center justify-between text-xs">
         <div className="flex items-center space-x-4">
           <span className="flex items-center">
-            <User className="w-3 h-3 mr-1" />
+            <User className="mr-1 h-3 w-3" />
             {/* {article.author} */}
           </span>
           <span className="flex items-center">
-            <Clock className="w-3 h-3 mr-1" />
+            <Clock className="mr-1 h-3 w-3" />
             {article.readTime} min read
           </span>
         </div>
@@ -83,10 +84,10 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
       <Button
         variant="ghost"
         size="sm"
-        className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+        className="group-hover:bg-primary group-hover:text-primary-foreground w-full transition-colors"
       >
         Read More
-        <ExternalLink className="w-3 h-3 ml-2" />
+        <ExternalLink className="ml-2 h-3 w-3" />
       </Button>
     </article>
   );

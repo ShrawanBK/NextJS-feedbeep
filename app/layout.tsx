@@ -1,11 +1,19 @@
-
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ 
-  subsets: ["latin"],
+import AppThemeProvider from "@/shared/providers/app-theme-provider";
+
+import { Toaster } from "@/shared/rui/toaster";
+import { Toaster as Sonner } from "@/shared/rui/sonner";
+import { detectLanguage } from "@/shared/config/i18n/server-helper";
+import I18nProvider from "@/shared/config/i18n/providers/i18n-provider";
+import TanstackQueryProvider from "@/shared/providers/tanstack-query-provider";
+
+const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -13,15 +21,29 @@ export const metadata: Metadata = {
   description: "A clean, minimalist news feed experience",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
+  const language = await detectLanguage();
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+    <html lang={language} suppressHydrationWarning>
+      <body className={`${inter.variable} antialiased`}>
+        <I18nProvider>
+          <TanstackQueryProvider>
+            <AppThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+              <Sonner />
+            </AppThemeProvider>
+          </TanstackQueryProvider>
+        </I18nProvider>
       </body>
     </html>
   );

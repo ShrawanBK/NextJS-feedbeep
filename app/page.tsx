@@ -1,5 +1,7 @@
-import { FeedPage } from '../src/pages/feed/ui/feed-page';
+"use client";
 
-export default function Home() {
-  return <FeedPage />;
+import HomeLayout from "@/widgets/home";
+
+export default function HomePage() {
+  return <HomeLayout />;
 }

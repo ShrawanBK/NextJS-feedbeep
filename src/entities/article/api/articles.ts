@@ -1,13 +1,12 @@
-
-import { Article } from "../../../shared/types";
-import { mockArticles } from "../../../shared/api/mock-data";
+import type { Article } from "@/src/shared/types";
+import { mockArticles } from "@/src/shared/api/mock-data";
 
 // Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchArticles = async (
   page = 1,
-  limit = 10,
+  limit = 10
 ): Promise<{ articles: Article[]; hasNextPage: boolean }> => {
   await delay(800);
 

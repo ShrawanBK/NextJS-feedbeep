@@ -1,4 +1,3 @@
-
 import { create } from "zustand";
 
 interface ArticleFiltersState {
@@ -31,7 +30,9 @@ const initialState: ArticleFiltersState = {
 
 export const useArticleFiltersStore = create<ArticleFiltersStore>()((set) => ({
   ...initialState,
-  setFilterCategory: (filter) => set({ filterCategory: filter }),
+  setFilterCategory: (filter) => {
+    set({ filterCategory: filter, filterSubCategory: null });
+  },
   setFilterSubCategory: (filter) => set({ filterSubCategory: filter }),
   setSearchQuery: (query) => set({ searchQuery: query }),
   resetFilters: () =>
