@@ -17,8 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FeedBeep - Modern News Feed",
-  description: "A clean, minimalist news feed experience",
+  title: "FeedBeep - Personalized News Feed",
+  description: "A clean, personalized news feed experience",
 };
 
 export default async function RootLayout({

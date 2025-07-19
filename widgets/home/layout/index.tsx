@@ -33,8 +33,6 @@ const HomeLayout = () => {
 
         <main className="flex-1 overflow-y-auto">
           <div className="mx-auto max-w-4xl p-6">
-            {filterMain === "Home" && <FeaturedArticle />}
-
             <TopicArticleList />
           </div>
         </main>

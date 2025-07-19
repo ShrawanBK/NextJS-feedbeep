@@ -17,7 +17,7 @@ interface ArticleFiltersState {
 interface ArticleFiltersActions {
   setFilterMain: (filter: string) => void;
   setFilterCategory: (filter: string) => void;
-  setFilterSubCategory: (filter: string) => void;
+  setFilterSubCategory: (category: string, subCategory: string) => void;
   setSearchQuery: (query: string) => void;
   resetFilters: () => void;
   initialize: (props: initializeProps) => void;
@@ -41,9 +41,14 @@ export const useArticleFiltersStore = create<ArticleFiltersStore>()((set) => ({
       filterSubCategory: null,
     }),
   setFilterCategory: (filter) => {
-    set({ filterCategory: filter, filterSubCategory: null });
+    set({ filterMain: null, filterCategory: filter, filterSubCategory: null });
   },
-  setFilterSubCategory: (filter) => set({ filterSubCategory: filter }),
+  setFilterSubCategory: (category, subCategory) =>
+    set({
+      filterSubCategory: subCategory,
+      filterCategory: category,
+      filterMain: null,
+    }),
   setSearchQuery: (query) => set({ searchQuery: query }),
   resetFilters: () => set(initialState),
   initialize: (props) =>

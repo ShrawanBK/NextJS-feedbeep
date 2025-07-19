@@ -10,6 +10,7 @@ import { GridView } from "./parts/grid-view";
 import { ListFilter } from "./parts/list-filter";
 import { ListHeader } from "./parts/list-header";
 import { ListSkeleton } from "./parts/list-skeleton";
+import { FeaturedArticle } from "../../featured-article/ui";
 
 interface Props {
   topicId?: string;
@@ -78,13 +79,17 @@ export const TopicArticleList = ({ topicId, subCategoryId }: Props) => {
   }, [articles, searchQuery, filterMain, filterCategory, filterSubCategory]);
 
   const activeFilterText = useMemo(() => {
+    if (filterMain === "Home") {
+      return "Home";
+    }
+
     if (!filterCategory && !filterSubCategory) {
       return "";
     }
     return `${filterCategory ?? ""} ${
       filterSubCategory ? `- ${filterSubCategory}` : ""
     }`;
-  }, [filterCategory, filterSubCategory]);
+  }, [filterCategory, filterSubCategory, filterMain]);
 
   if (isFetching && !isFetchingNextPage) {
     return <ListSkeleton />;
@@ -100,6 +105,8 @@ export const TopicArticleList = ({ topicId, subCategoryId }: Props) => {
         activeFilter={activeFilterText}
         articlesCount={filteredArticles.length}
       />
+
+      {filterMain === "Home" && <FeaturedArticle />}
       {filteredArticles.length > 0 ? (
         <>
           <GridView data={filteredArticles} isLoading={isFetchingNextPage} />

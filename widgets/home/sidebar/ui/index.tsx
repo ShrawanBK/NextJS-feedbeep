@@ -49,21 +49,9 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     setFilterSubCategory,
   } = useArticleFiltersStore();
 
-  const [expandedTopics, setExpandedTopics] = useState<string[]>(
-    filterCategory
-      ? [filterCategory]
-      : categories.length > 0
-        ? [categories[0].name]
-        : []
+  const [expandedTopic, setExpandedTopic] = useState<string>(
+    (filterCategory ?? categories.length > 0) ? categories[0].name : ""
   );
-
-  const toggleTopic = (topicName: string) => {
-    setExpandedTopics((prev) =>
-      prev.includes(topicName)
-        ? prev.filter((name) => name !== topicName)
-        : [...prev, topicName]
-    );
-  };
 
   const handleMainFilterClick = (filter: string) => {
     setFilterMain(filter);
@@ -79,8 +67,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     }
   };
 
-  const handleSubCategoryClick = (subCategory: string) => {
-    setFilterSubCategory(subCategory);
+  const handleSubCategoryClick = (category: string, subCategory: string) => {
+    setFilterSubCategory(category, subCategory);
     if (window.innerWidth < 1024) {
       onClose();
     }
@@ -173,8 +161,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   return (
                     <Collapsible
                       key={topic.name}
-                      open={expandedTopics.includes(topic.name)}
-                      onOpenChange={() => toggleTopic(topic.name)}
+                      open={expandedTopic === topic.name}
+                      onOpenChange={() => setExpandedTopic(topic.name)}
                     >
                       <CollapsibleTrigger asChild>
                         <Button
@@ -193,7 +181,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                             {/* <topic.icon className="mr-3 h-4 w-4" /> */}
                             {topic.name}
                           </div>
-                          {expandedTopics.includes(topic.name) ? (
+                          {expandedTopic === topic.name ? (
                             <ChevronDown className="h-4 w-4" />
                           ) : (
                             <ChevronRight className="h-4 w-4" />
@@ -217,7 +205,9 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                 "w-full justify-between rounded-full hover:bg-gray-200 dark:hover:bg-gray-800",
                                 isSubCategoryActive && "hover:bg-primary/90"
                               )}
-                              onClick={() => handleSubCategoryClick(sub.name)}
+                              onClick={() =>
+                                handleSubCategoryClick(topic.name, sub.name)
+                              }
                             >
                               {sub.name}
                             </Button>
