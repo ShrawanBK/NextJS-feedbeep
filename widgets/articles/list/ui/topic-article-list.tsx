@@ -1,12 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import {
-  useLoadMoreArticles,
-  LoadMoreArticleButton,
-} from "@/features/article/load-more-article";
-
-import { useArticleFiltersStore } from "@/src/shared/stores/use-article-filters-store";
+import { useArticles } from "@/entities/article/api/use-articles";
+import { useArticleFiltersStore } from "@/features/article/filter-articles";
+import { LoadMoreArticleButton } from "@/features/article/load-more-article";
 
 import { NoArticle } from "./no-article";
 import { GridView } from "./parts/grid-view";
@@ -29,7 +26,7 @@ export const TopicArticleList = ({ topicId, subCategoryId }: Props) => {
     hasNextPage,
     isFetchingNextPage,
     isFetching,
-  } = useLoadMoreArticles();
+  } = useArticles();
 
   const filteredArticles = useMemo(() => {
     let filtered = [...articles];

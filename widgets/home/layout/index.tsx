@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Header from "@/widgets/home/header/ui";
 import Sidebar from "@/widgets/home/sidebar/ui";
 import { FeaturedArticle } from "@/widgets/articles/featured-article/ui";
+import { useArticleFiltersStore } from "@/features/article/filter-articles";
 import { TopicArticleList } from "@/widgets/articles/list/ui/topic-article-list";
-
-import { useArticleFiltersStore } from "@/src/shared/stores/use-article-filters-store";
 
 const HomeLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

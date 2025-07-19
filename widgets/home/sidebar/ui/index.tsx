@@ -1,5 +1,7 @@
 import { useState } from "react";
 import React, { useCallback } from "react";
+import { useCategories } from "@/entities/category/api/queries";
+import { useArticleFiltersStore } from "@/features/article/filter-articles";
 import {
   X,
   Home,
@@ -12,8 +14,6 @@ import {
 import { cn } from "@/shared/utils";
 import { Button } from "@/shared/rui/button";
 import { ScrollArea } from "@/shared/rui/scroll-area";
-import { useCategories } from "@/src/shared/hooks/use-categories";
-import { useArticleFiltersStore } from "@/src/shared/stores/use-article-filters-store";
 import {
   Collapsible,
   CollapsibleContent,
@@ -203,12 +203,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                       <CollapsibleContent className="space-y-1 pl-6">
                         {topic.subcategories?.map((sub) => {
                           const isSubCategoryActive = isActive(
-                            sub,
+                            sub.name,
                             "subcategory"
                           );
                           return (
                             <Button
-                              key={sub}
+                              key={sub.id}
                               variant={
                                 isSubCategoryActive ? "default" : "ghost"
                               }
@@ -217,9 +217,9 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                 "w-full justify-between rounded-full hover:bg-gray-200 dark:hover:bg-gray-800",
                                 isSubCategoryActive && "hover:bg-primary/90"
                               )}
-                              onClick={() => handleSubCategoryClick(sub)}
+                              onClick={() => handleSubCategoryClick(sub.name)}
                             >
-                              {sub}
+                              {sub.name}
                             </Button>
                           );
                         })}

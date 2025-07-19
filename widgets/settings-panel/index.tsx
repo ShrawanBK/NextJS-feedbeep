@@ -16,7 +16,7 @@ import { Label } from "@/shared/rui/label";
 import { Button } from "@/shared/rui/button";
 import { Switch } from "@/shared/rui/switch";
 import { Separator } from "@/shared/rui/separator";
-import { useTheme } from "@/src/shared/hooks/use-theme";
+import { useTheme } from "next-themes";
 import { RadioGroup, RadioGroupItem } from "@/shared/rui/radio-group";
 import {
   Select,
