@@ -29,7 +29,7 @@ export default async function RootLayout({
   const language = await detectLanguage();
   return (
     <html lang={language} suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} overflow-y-hidden antialiased`}>
         <I18nProvider>
           <TanstackQueryProvider>
             <AppThemeProvider

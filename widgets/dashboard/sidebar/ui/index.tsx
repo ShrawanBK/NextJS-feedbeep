@@ -1,24 +1,21 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import React, { useCallback } from "react";
+import { useRouter, usePathname, useParams } from "next/navigation";
+import { X, ChevronDown, ChevronRight } from "lucide-react";
 import { useCategories } from "@/entities/category/api/queries";
 import { useArticleFiltersStore } from "@/features/article/filter-articles";
-import {
-  X,
-  Home,
-  Bookmark,
-  TrendingUp,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
 
 import { cn } from "@/shared/utils";
 import { Button } from "@/shared/rui/button";
+import PATHS from "@/shared/config/routes/paths";
 import { ScrollArea } from "@/shared/rui/scroll-area";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/shared/rui/collapsible";
+
+import { MAIN_MENU } from "../constant/mainmenu.constant";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -39,36 +36,70 @@ const quickFilters = [
 ];
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  const router = useRouter();
   const { data: categories = [] } = useCategories();
-  const {
-    filterMain,
-    filterCategory,
-    filterSubCategory,
-    setFilterMain,
-    setFilterCategory,
-    setFilterSubCategory,
-  } = useArticleFiltersStore();
+  const { filterMain, filterCategory, filterSubCategory } =
+    useArticleFiltersStore();
 
-  const [expandedTopic, setExpandedTopic] = useState<string>(
+  const pathname = usePathname();
+
+  const pathnameParams = useParams();
+
+  const isActiveMainMenu = useCallback(
+    (label: string) => {
+      return pathname === label;
+    },
+    [pathname]
+  );
+
+  const handleMainMenuClick = useCallback(
+    (label: string) => {
+      router.push(label);
+      if (window.innerWidth < 1024) {
+        onClose();
+      }
+    },
+    [router, onClose]
+  );
+
+  const [expandedCategory, setExpandedCategory] = useState<string>(
     (filterCategory ?? categories.length > 0) ? categories[0].name : ""
   );
 
-  const handleMainFilterClick = (filter: string) => {
-    setFilterMain(filter);
-    if (window.innerWidth < 1024) {
-      onClose();
-    }
-  };
+  const isCategoryActive = useCallback(
+    (categorySlug: string) => {
+      return categorySlug === pathnameParams.catSlug;
+    },
+    [pathnameParams.catSlug]
+  );
 
   const handleCategoryClick = (category: string) => {
-    setFilterCategory(category);
+    router.push(PATHS.topics.category(category.toLowerCase()));
     if (window.innerWidth < 1024) {
       onClose();
     }
   };
 
-  const handleSubCategoryClick = (category: string, subCategory: string) => {
-    setFilterSubCategory(category, subCategory);
+  const paramHasSubcategory = useMemo(
+    () => !!pathnameParams.subcatSlug,
+    [pathnameParams.subcatSlug]
+  );
+
+  const isSubCategoryActive = useCallback(
+    (categorySlug: string, subCategorySlug: string) => {
+      return (
+        categorySlug === pathnameParams.catSlug &&
+        subCategorySlug === pathnameParams.subcatSlug
+      );
+    },
+    [pathnameParams.catSlug, pathnameParams.subcatSlug]
+  );
+
+  const handleSubCategoryClick = (
+    categorySlug: string,
+    subCategorySlug: string
+  ) => {
+    router.push(PATHS.topics.subCategory(categorySlug, subCategorySlug));
     if (window.innerWidth < 1024) {
       onClose();
     }
@@ -121,32 +152,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <div className="p-4">
             {/* Main Navigation */}
             <div className="mb-6 space-y-2">
-              <Button
-                variant={isActive("Home", "main") ? "default" : "ghost"}
-                className="w-full justify-start rounded-full"
-                onClick={() => handleMainFilterClick("Home")}
-              >
-                <Home className="mr-3 h-4 w-4" />
-                Home
-              </Button>
-
-              <Button
-                variant={isActive("Trending", "main") ? "default" : "ghost"}
-                className="w-full justify-start rounded-full"
-                onClick={() => handleMainFilterClick("Trending")}
-              >
-                <TrendingUp className="mr-3 h-4 w-4" />
-                Trending
-              </Button>
-
-              <Button
-                variant={isActive("Read Later", "main") ? "default" : "ghost"}
-                className="w-full justify-start rounded-full"
-                onClick={() => handleMainFilterClick("Read Later")}
-              >
-                <Bookmark className="mr-3 h-4 w-4" />
-                Read Later
-              </Button>
+              {MAIN_MENU.map((item) => (
+                <Button
+                  key={item.label}
+                  variant={isActiveMainMenu(item.path) ? "default" : "ghost"}
+                  className="w-full justify-start rounded-full"
+                  onClick={() => handleMainMenuClick(item.path as string)}
+                >
+                  <item.icon className="mr-3 h-4 w-4" />
+                  {item.label}
+                </Button>
+              ))}
             </div>
 
             {/* Topics */}
@@ -155,33 +171,36 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 Topics
               </h3>
               <div className="space-y-1">
-                {categories.map((topic) => {
-                  const isCategoryActive = isActive(topic.name, "category");
+                {categories.map((category) => {
+                  const categoryActive = isCategoryActive(category.slug);
 
                   return (
                     <Collapsible
-                      key={topic.name}
-                      open={expandedTopic === topic.name}
-                      onOpenChange={() => setExpandedTopic(topic.name)}
+                      key={category.name}
+                      open={expandedCategory === category.name}
+                      onOpenChange={() => setExpandedCategory(category.name)}
                     >
                       <CollapsibleTrigger asChild>
                         <Button
-                          variant={isCategoryActive ? "default" : "ghost"}
+                          variant={categoryActive ? "default" : "ghost"}
                           className={cn(
                             "w-full justify-between rounded-full hover:bg-gray-100 dark:hover:bg-gray-800",
-                            isCategoryActive && "hover:bg-primary/90"
+                            categoryActive &&
+                              !paramHasSubcategory &&
+                              "hover:bg-primary/80",
+                            categoryActive &&
+                              paramHasSubcategory &&
+                              "bg-secondary/60 text-secondary-foreground hover:bg-secondary/80"
                           )}
                           onClick={(e) => {
-                            console.log("topic.name", topic.name);
                             e.stopPropagation();
-                            handleCategoryClick(topic.name);
+                            handleCategoryClick(category.slug);
                           }}
                         >
                           <div className="flex items-center">
-                            {/* <topic.icon className="mr-3 h-4 w-4" /> */}
-                            {topic.name}
+                            {category.name}
                           </div>
-                          {expandedTopic === topic.name ? (
+                          {expandedCategory === category.name ? (
                             <ChevronDown className="h-4 w-4" />
                           ) : (
                             <ChevronRight className="h-4 w-4" />
@@ -189,27 +208,28 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                         </Button>
                       </CollapsibleTrigger>
                       <CollapsibleContent className="space-y-1 pl-6">
-                        {topic.subcategories?.map((sub) => {
-                          const isSubCategoryActive = isActive(
-                            sub.name,
-                            "subcategory"
+                        {category.subcategories?.map((subCategory) => {
+                          const subcagegoryActive = isSubCategoryActive(
+                            category.slug,
+                            subCategory.slug
                           );
                           return (
                             <Button
-                              key={sub.id}
-                              variant={
-                                isSubCategoryActive ? "default" : "ghost"
-                              }
+                              key={subCategory.id}
+                              variant={subcagegoryActive ? "default" : "ghost"}
                               size="sm"
                               className={cn(
                                 "w-full justify-between rounded-full hover:bg-gray-200 dark:hover:bg-gray-800",
-                                isSubCategoryActive && "hover:bg-primary/90"
+                                subcagegoryActive && "hover:bg-primary/90"
                               )}
                               onClick={() =>
-                                handleSubCategoryClick(topic.name, sub.name)
+                                handleSubCategoryClick(
+                                  category.slug,
+                                  subCategory.slug
+                                )
                               }
                             >
-                              {sub.name}
+                              {subCategory.name}
                             </Button>
                           );
                         })}

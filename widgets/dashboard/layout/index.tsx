@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import Header from "@/widgets/home/header/ui";
-import Sidebar from "@/widgets/home/sidebar/ui";
-import { FeaturedArticle } from "@/widgets/articles/featured-article/ui";
-import { useArticleFiltersStore } from "@/features/article/filter-articles";
-import { TopicArticleList } from "@/widgets/articles/list/ui/topic-article-list";
+"use client";
 
-const HomeLayout = () => {
+import React, { useState } from "react";
+import Header from "@/widgets/dashboard/header/ui";
+import Sidebar from "@/widgets/dashboard/sidebar/ui";
+
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { filterMain } = useArticleFiltersStore();
 
   const handleMenuToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -32,13 +30,11 @@ const HomeLayout = () => {
         />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-4xl p-6">
-            <TopicArticleList />
-          </div>
+          <div className="mx-auto max-w-4xl p-6">{children}</div>
         </main>
       </div>
     </div>
   );
 };
 
-export default HomeLayout;
+export default DashboardLayout;

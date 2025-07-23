@@ -1,7 +1,12 @@
 "use client";
 
-import HomeLayout from "@/widgets/home";
+import { HomeView } from "@/views/home/ui/home";
+import DashboardLayout from "@/widgets/dashboard";
 
 export default function HomePage() {
-  return <HomeLayout />;
+  return (
+    <DashboardLayout>
+      <HomeView />
+    </DashboardLayout>
+  );
 }
