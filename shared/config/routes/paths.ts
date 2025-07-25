@@ -1,6 +1,7 @@
 const PATH_ROOTS = {
   ROOT: "",
   TOPICS: "/topics",
+  KEYWORD: "/keyword",
 } as const;
 
 const PATHS = {
@@ -16,6 +17,10 @@ const PATHS = {
       `${PATH_ROOTS.TOPICS}/${category}/${subCategory}`,
     article: (category: string, subCategory: string, article: string) =>
       `${PATH_ROOTS.TOPICS}/${category}/${subCategory}/${article}`,
+  },
+  keyword: {
+    root: PATH_ROOTS.KEYWORD,
+    slug: (keywordSlug: string) => `${PATH_ROOTS.KEYWORD}/${keywordSlug}`,
   },
 };
 

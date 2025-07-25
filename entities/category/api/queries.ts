@@ -7,5 +7,6 @@ export const useCategories = () => {
   return useQuery({
     queryKey: CATEGORY_QUERY_KEY.allCategories,
     queryFn: fetchCategories,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 };

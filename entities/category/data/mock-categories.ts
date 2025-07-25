@@ -1,7 +1,7 @@
 import type {
   ICategory,
   ISubCategory,
-  ICategoryKeyword,
+  ICategorySubcategory,
 } from "../model/category.type";
 
 export const MOCK_CATEGORIES: ICategory[] = [
@@ -9,26 +9,31 @@ export const MOCK_CATEGORIES: ICategory[] = [
     id: "technology",
     name: "Technology",
     slug: "technology",
+    createdAt: new Date(),
   },
   {
     id: "business",
     name: "Business",
     slug: "business",
+    createdAt: new Date(),
   },
   {
     id: "science",
     name: "Science",
     slug: "science",
+    createdAt: new Date(),
   },
   {
     id: "politics",
     name: "Politics",
     slug: "politics",
+    createdAt: new Date(),
   },
   {
     id: "sports",
     name: "Sports",
     slug: "sports",
+    createdAt: new Date(),
   },
 ];
 
@@ -36,172 +41,213 @@ export const MOCK_SUB_CATEGORIES: ISubCategory[] = [
   {
     id: "ai-machine-learning",
     name: "AI & Machine Learning",
-    categoryId: "technology",
     slug: "ai-machine-learning",
+    createdAt: new Date(),
   },
   {
     id: "gadgets",
     name: "Gadgets",
-    categoryId: "technology",
     slug: "gadgets",
+    createdAt: new Date(),
   },
   {
     id: "startups",
     name: "Startups",
-    categoryId: "technology",
     slug: "startups",
+    createdAt: new Date(),
   },
   {
     id: "software",
     name: "Software",
-    categoryId: "technology",
     slug: "software",
+    createdAt: new Date(),
   },
   {
     id: "cybersecurity",
     name: "Cybersecurity",
-    categoryId: "technology",
     slug: "cybersecurity",
+    createdAt: new Date(),
   },
   {
     id: "markets",
     name: "Markets",
-    categoryId: "business",
     slug: "markets",
+    createdAt: new Date(),
   },
   {
     id: "economics",
     name: "Economics",
-    categoryId: "business",
     slug: "economics",
+    createdAt: new Date(),
   },
   {
     id: "finance",
     name: "Finance",
-    categoryId: "business",
     slug: "finance",
+    createdAt: new Date(),
   },
   {
     id: "research",
     name: "Research",
-    categoryId: "science",
     slug: "research",
+    createdAt: new Date(),
   },
   {
     id: "climate",
     name: "Climate",
-    categoryId: "science",
     slug: "climate",
+    createdAt: new Date(),
   },
   {
     id: "space",
     name: "Space",
-    categoryId: "science",
     slug: "space",
+    createdAt: new Date(),
   },
   {
     id: "health",
     name: "Health",
-    categoryId: "science",
     slug: "health",
+    createdAt: new Date(),
   },
   {
     id: "elections",
     name: "Elections",
-    categoryId: "politics",
     slug: "elections",
+    createdAt: new Date(),
   },
   {
     id: "policy",
     name: "Policy",
-    categoryId: "politics",
     slug: "policy",
+    createdAt: new Date(),
   },
   {
     id: "international",
     name: "International",
-    categoryId: "politics",
     slug: "international",
+    createdAt: new Date(),
   },
   {
     id: "football",
     name: "Football",
-    categoryId: "sports",
     slug: "football",
+    createdAt: new Date(),
   },
   {
     id: "basketball",
     name: "Basketball",
-    categoryId: "sports",
     slug: "basketball",
+    createdAt: new Date(),
   },
   {
     id: "soccer",
     name: "Soccer",
-    categoryId: "sports",
     slug: "soccer",
+    createdAt: new Date(),
   },
   {
     id: "olympics",
     name: "Olympics",
-    categoryId: "sports",
     slug: "olympics",
+    createdAt: new Date(),
   },
 ];
 
-export const MOCK_KEYWORDS: ICategoryKeyword[] = [
-  // Technology category
-  { id: "1", categoryId: "technology", keyword: "tech" },
-  { id: "2", categoryId: "technology", keyword: "ai" },
-  { id: "3", categoryId: "technology", keyword: "software" },
-  { id: "4", categoryId: "technology", keyword: "digital" },
-  { id: "5", categoryId: "technology", keyword: "innovation" },
-
-  // AI & Machine Learning subcategory
+export const MOCK_CATEGORY_SUBCATEGORIES: ICategorySubcategory[] = [
   {
-    id: "6",
+    id: "technology-ai-machine-learning",
     categoryId: "technology",
-    subCategoryId: "ai-machine-learning",
-    keyword: "ai",
+    subcategoryId: "ai-machine-learning",
   },
   {
-    id: "7",
+    id: "technology-gadgets",
     categoryId: "technology",
-    subCategoryId: "ai-machine-learning",
-    keyword: "machine learning",
+    subcategoryId: "gadgets",
   },
   {
-    id: "8",
+    id: "technology-software",
     categoryId: "technology",
-    subCategoryId: "ai-machine-learning",
-    keyword: "artificial",
+    subcategoryId: "software",
   },
-
-  // Business category
-  { id: "9", categoryId: "business", keyword: "business" },
-  { id: "10", categoryId: "business", keyword: "market" },
-  { id: "11", categoryId: "business", keyword: "economy" },
-  { id: "12", categoryId: "business", keyword: "finance" },
-
-  // Science category
-  { id: "13", categoryId: "science", keyword: "science" },
-  { id: "14", categoryId: "science", keyword: "research" },
-  { id: "15", categoryId: "science", keyword: "study" },
-  { id: "16", categoryId: "science", keyword: "climate" },
-
-  // Optional — Additional unlinked tags (for discovery/popularity-based logic)
-  // These don't tie to a specific category but could be assigned if needed
-  { id: "18", categoryId: "technology", keyword: "elon" },
-  { id: "19", categoryId: "technology", keyword: "musk" },
-  { id: "20", categoryId: "technology", keyword: "tesla" },
-  { id: "21", categoryId: "technology", keyword: "spacex" },
-  { id: "22", categoryId: "business", keyword: "bitcoin" },
-  { id: "23", categoryId: "business", keyword: "crypto" },
-  { id: "24", categoryId: "business", keyword: "blockchain" },
-  { id: "25", categoryId: "technology", keyword: "apple" },
-  { id: "26", categoryId: "technology", keyword: "iphone" },
-  { id: "27", categoryId: "technology", keyword: "ios" },
-  { id: "28", categoryId: "technology", keyword: "google" },
-  { id: "29", categoryId: "technology", keyword: "android" },
-  { id: "30", categoryId: "technology", keyword: "alphabet" },
+  {
+    id: "technology-cybersecurity",
+    categoryId: "technology",
+    subcategoryId: "cybersecurity",
+  },
+  {
+    id: "business-startups",
+    categoryId: "business",
+    subcategoryId: "startups",
+  },
+  {
+    id: "business-markets",
+    categoryId: "business",
+    subcategoryId: "markets",
+  },
+  {
+    id: "business-economics",
+    categoryId: "business",
+    subcategoryId: "economics",
+  },
+  {
+    id: "business-finance",
+    categoryId: "business",
+    subcategoryId: "finance",
+  },
+  {
+    id: "science-research",
+    categoryId: "science",
+    subcategoryId: "research",
+  },
+  {
+    id: "science-climate",
+    categoryId: "science",
+    subcategoryId: "climate",
+  },
+  {
+    id: "science-space",
+    categoryId: "science",
+    subcategoryId: "space",
+  },
+  {
+    id: "science-health",
+    categoryId: "science",
+    subcategoryId: "health",
+  },
+  {
+    id: "politics-elections",
+    categoryId: "politics",
+    subcategoryId: "elections",
+  },
+  {
+    id: "politics-policy",
+    categoryId: "politics",
+    subcategoryId: "policy",
+  },
+  {
+    id: "politics-international",
+    categoryId: "politics",
+    subcategoryId: "international",
+  },
+  {
+    id: "sports-football",
+    categoryId: "sports",
+    subcategoryId: "football",
+  },
+  {
+    id: "sports-basketball",
+    categoryId: "sports",
+    subcategoryId: "basketball",
+  },
+  {
+    id: "sports-soccer",
+    categoryId: "sports",
+    subcategoryId: "soccer",
+  },
+  {
+    id: "sports-olympics",
+    categoryId: "sports",
+    subcategoryId: "olympics",
+  },
 ];
