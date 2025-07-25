@@ -1,5 +1,5 @@
-import type { IArticle } from "@/entities/article/model/article.type";
-import ArticleCard from "@/widgets/articles/article-card/ui/article-card";
+import { ArticleCard } from "@/widgets/articles";
+import type { IArticle } from "@/entities/article";
 
 import { ArticleGridSkeleton } from "./article-grid-skeleton";
 

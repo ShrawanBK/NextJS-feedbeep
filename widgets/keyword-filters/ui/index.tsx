@@ -1,9 +1,10 @@
 import { useMemo, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useKeywordFilters } from "@/entities/keyword/api/queries";
+import { useKeywordFilters } from "@/entities/keyword";
 
 import { Button } from "@/shared/rui/button";
 import PATHS from "@/shared/config/routes/paths";
+
 import { FiltersSkeleton } from "./parts/filters-skeleton";
 
 interface KeywordFiltersProps {
@@ -67,3 +68,5 @@ export const KeywordFilters = ({ onClick }: KeywordFiltersProps) => {
     </div>
   );
 };
+
+KeywordFilters.displayName = "KeywordFilters";

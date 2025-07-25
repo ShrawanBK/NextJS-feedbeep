@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import Header from "@/widgets/dashboard/header/ui";
-import Sidebar from "@/widgets/dashboard/sidebar/ui";
+import { Header } from "@/widgets/dashboard/header";
+import { Sidebar } from "@/widgets/dashboard/sidebar";
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+export const DashboardLayout = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleMenuToggle = () => {

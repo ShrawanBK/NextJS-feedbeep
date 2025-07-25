@@ -3,7 +3,7 @@ import { BookmarkIcon } from "lucide-react";
 import { Button } from "@/shared/rui/button";
 import { toast } from "@/shared/hooks/use-toast";
 
-const SaveArticleButton = ({ articleId }: { articleId: string }) => {
+export const SaveArticleButton = ({ articleId }: { articleId: string }) => {
   const handleSave = (articleId: string) => {
     toast({
       title: "Article saved for id" + articleId,
@@ -23,4 +23,4 @@ const SaveArticleButton = ({ articleId }: { articleId: string }) => {
   );
 };
 
-export default SaveArticleButton;
+SaveArticleButton.displayName = "SaveArticleButton";

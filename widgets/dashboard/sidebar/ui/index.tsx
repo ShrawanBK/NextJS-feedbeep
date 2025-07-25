@@ -1,14 +1,9 @@
 import { X } from "lucide-react";
-import { useMemo, useState } from "react";
 import React, { useCallback } from "react";
-import { KeywordFilters } from "@/widgets/keyword-filters/ui";
-import { useCategories } from "@/entities/category/api/queries";
-import { useKeywordFilters } from "@/entities/keyword/api/queries";
-import { useRouter, useParams, usePathname } from "next/navigation";
-import { useArticleFiltersStore } from "@/features/article/filter-articles";
+import { useRouter, usePathname } from "next/navigation";
+import { KeywordFilters } from "@/widgets/keyword-filters";
 
 import { Button } from "@/shared/rui/button";
-import PATHS from "@/shared/config/routes/paths";
 import { ScrollArea } from "@/shared/rui/scroll-area";
 
 import { TopicsMenu } from "./parts/topics-menu";
@@ -19,18 +14,10 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const router = useRouter();
-  const { data: categories = [] } = useCategories();
-
-  const { data: keywordFilters = [] } = useKeywordFilters();
-
-  const { filterMain, filterCategory, filterSubCategory } =
-    useArticleFiltersStore();
 
   const pathname = usePathname();
-
-  const pathnameParams = useParams();
 
   const isActiveMainMenu = useCallback(
     (label: string) => {
@@ -47,80 +34,6 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       }
     },
     [router, onClose]
-  );
-
-  const [expandedCategory, setExpandedCategory] = useState<string>(
-    (filterCategory ?? categories.length > 0) ? categories[0].name : ""
-  );
-
-  const isCategoryActive = useCallback(
-    (categorySlug: string) => {
-      if (!pathnameParams.catSlug) {
-        return false;
-      }
-      return categorySlug === pathnameParams.catSlug;
-    },
-    [pathnameParams.catSlug]
-  );
-
-  const handleCategoryClick = (category: string) => {
-    router.push(PATHS.topics.category(category.toLowerCase()));
-    if (window.innerWidth < 1024) {
-      onClose();
-    }
-  };
-
-  const paramHasSubcategory = useMemo(
-    () => !!pathnameParams.subcatSlug,
-    [pathnameParams.subcatSlug]
-  );
-
-  const isSubCategoryActive = useCallback(
-    (categorySlug: string, subCategorySlug: string) => {
-      if (!paramHasSubcategory) {
-        return false;
-      }
-      return (
-        categorySlug === pathnameParams.catSlug &&
-        subCategorySlug === pathnameParams.subcatSlug
-      );
-    },
-    [pathnameParams.catSlug, pathnameParams.subcatSlug, paramHasSubcategory]
-  );
-
-  const handleSubCategoryClick = (
-    categorySlug: string,
-    subCategorySlug: string
-  ) => {
-    router.push(PATHS.topics.subCategory(categorySlug, subCategorySlug));
-    if (window.innerWidth < 1024) {
-      onClose();
-    }
-  };
-
-  const handleKeywordClick = useCallback(
-    (keywordSlug: string) => {
-      router.push(PATHS.keyword.slug(keywordSlug));
-      if (window.innerWidth < 1024) {
-        onClose();
-      }
-    },
-    [router, onClose]
-  );
-
-  const pathnameHasKeyword = useMemo(
-    () => !!pathnameParams.keywordSlug,
-    [pathnameParams.keywordSlug]
-  );
-
-  const isActiveKeyword = useCallback(
-    (keywordSlug: string) => {
-      if (!pathnameHasKeyword) {
-        return false;
-      }
-      return keywordSlug === pathnameParams.keywordSlug;
-    },
-    [pathnameParams.keywordSlug, pathnameHasKeyword]
   );
 
   return (
@@ -179,4 +92,4 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   );
 };
 
-export default Sidebar;
+Sidebar.displayName = "Sidebar";

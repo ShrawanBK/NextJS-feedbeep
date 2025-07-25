@@ -6,7 +6,11 @@ interface Props {
   disabled: boolean;
 }
 
-const LoadMoreArticleButton = ({ onClick, loading, disabled }: Props) => {
+export const LoadMoreArticleButton = ({
+  onClick,
+  loading,
+  disabled,
+}: Props) => {
   return (
     <Button
       onClick={onClick}
@@ -19,4 +23,4 @@ const LoadMoreArticleButton = ({ onClick, loading, disabled }: Props) => {
   );
 };
 
-export default LoadMoreArticleButton;
+LoadMoreArticleButton.displayName = "LoadMoreArticleButton";

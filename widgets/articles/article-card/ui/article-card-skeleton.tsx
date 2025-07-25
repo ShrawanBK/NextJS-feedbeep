@@ -1,14 +1,17 @@
+import { memo } from "react";
 import { Clock } from "lucide-react";
-import OpenArticleButton from "@/features/article/open-article/ui/open-article-button";
-import SaveArticleButton from "@/features/article/save-article/ui/save-article-button";
-import ShareArticleButton from "@/features/article/share-article/ui/share-article-button";
-import ListenArticleButton from "@/features/article/listen-article/ui/listen-article-button";
+import {
+  OpenArticleButton,
+  SaveArticleButton,
+  ShareArticleButton,
+  ListenArticleButton,
+} from "@/features/article";
 
 import { Badge } from "@/shared/rui/badge";
 import { Skeleton } from "@/shared/rui/skeleton";
 import { Card, CardContent } from "@/shared/rui/card";
 
-export const ArticleCardSkeleton = () => {
+export const ArticleCardSkeleton = memo(() => {
   return (
     <Card className="group overflow-hidden rounded-2xl border-0 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <CardContent className="p-0">
@@ -66,4 +69,6 @@ export const ArticleCardSkeleton = () => {
       </CardContent>
     </Card>
   );
-};
+});
+
+ArticleCardSkeleton.displayName = "ArticleCardSkeleton";

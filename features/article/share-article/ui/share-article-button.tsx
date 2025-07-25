@@ -3,7 +3,7 @@ import { Share2Icon } from "lucide-react";
 import { Button } from "@/shared/rui/button";
 import { toast } from "@/shared/hooks/use-toast";
 
-const ShareArticleButton = ({ articleId }: { articleId: string }) => {
+export const ShareArticleButton = ({ articleId }: { articleId: string }) => {
   const handleShare = (articleId: string) => {
     toast({
       title: "Link copied for article id " + articleId,
@@ -23,4 +23,4 @@ const ShareArticleButton = ({ articleId }: { articleId: string }) => {
   );
 };
 
-export default ShareArticleButton;
+ShareArticleButton.displayName = "ShareArticleButton";

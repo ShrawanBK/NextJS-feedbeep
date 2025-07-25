@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from "react";
+import { useCategories } from "@/entities/category";
 import { useParams, useRouter } from "next/navigation";
-import { useCategories } from "@/entities/category/api/queries";
 
 import PATHS from "@/shared/config/routes/paths";
 
@@ -94,3 +94,5 @@ export const TopicsMenu = ({ onClose }: TopicsMenuProps) => {
     </div>
   );
 };
+
+TopicsMenu.displayName = "TopicsMenu";

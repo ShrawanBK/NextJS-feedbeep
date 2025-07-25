@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import type { ICategoryWithSubcategories } from "@/entities/category/model/category.type";
+import type { ICategoryWithSubcategories } from "@/entities/category";
 import {
   Collapsible,
   CollapsibleTrigger,

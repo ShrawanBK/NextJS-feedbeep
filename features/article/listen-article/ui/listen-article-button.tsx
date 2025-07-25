@@ -3,7 +3,7 @@ import { Volume2Icon } from "lucide-react";
 import { Button } from "@/shared/rui/button";
 import { toast } from "@/shared/hooks/use-toast";
 
-const ListenArticleButton = ({ articleId }: { articleId: string }) => {
+export const ListenArticleButton = ({ articleId }: { articleId: string }) => {
   const handleListen = (articleId: string) => {
     toast({
       title: "Listening for article id " + articleId,
@@ -24,4 +24,4 @@ const ListenArticleButton = ({ articleId }: { articleId: string }) => {
   );
 };
 
-export default ListenArticleButton;
+ListenArticleButton.displayName = "ListenArticleButton";

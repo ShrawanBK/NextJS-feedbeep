@@ -2,8 +2,8 @@ import Image from "next/image";
 import React, { useState } from "react";
 import logo from "@/public/feedbeep-logo.png";
 import SettingsPanel from "@/widgets/settings-panel";
-import ThemeSwitcher from "@/features/theme-switcher";
 import { User, Menu, Bell, Search } from "lucide-react";
+import { ThemeSwitcher } from "@/features/theme-switcher";
 
 import { Input } from "@/shared/rui/input";
 import { Button } from "@/shared/rui/button";
@@ -14,7 +14,11 @@ interface HeaderProps {
   onSearch: (query: string) => void;
 }
 
-const Header = ({ onMenuToggle, isSidebarOpen, onSearch }: HeaderProps) => {
+export const Header = ({
+  onMenuToggle,
+  isSidebarOpen,
+  onSearch,
+}: HeaderProps) => {
   const [showSettings, setShowSettings] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -83,4 +87,4 @@ const Header = ({ onMenuToggle, isSidebarOpen, onSearch }: HeaderProps) => {
   );
 };
 
-export default Header;
+Header.displayName = "Header";

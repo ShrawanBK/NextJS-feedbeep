@@ -1,11 +1,13 @@
 import React from "react";
 import Image from "next/image";
 import { Clock } from "lucide-react";
-import type { IArticle } from "@/entities/article/model/article.type";
-import OpenArticleButton from "@/features/article/open-article/ui/open-article-button";
-import SaveArticleButton from "@/features/article/save-article/ui/save-article-button";
-import ShareArticleButton from "@/features/article/share-article/ui/share-article-button";
-import ListenArticleButton from "@/features/article/listen-article/ui/listen-article-button";
+import type { IArticle } from "@/entities/article/model";
+import {
+  OpenArticleButton,
+  SaveArticleButton,
+  ShareArticleButton,
+  ListenArticleButton,
+} from "@/features/article";
 
 import { Badge } from "@/shared/rui/badge";
 import { Card, CardContent } from "@/shared/rui/card";
@@ -14,7 +16,7 @@ interface ArticleCardProps {
   article: IArticle;
 }
 
-const ArticleCard = ({ article }: ArticleCardProps) => {
+export const ArticleCard = ({ article }: ArticleCardProps) => {
   return (
     <Card className="group bg-card/90 overflow-hidden rounded-2xl border-0 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <CardContent className="p-0">
@@ -82,4 +84,4 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
   );
 };
 
-export default ArticleCard;
+ArticleCard.displayName = "ArticleCard";

@@ -1,5 +1,5 @@
+import type { IArticle } from "@/entities/article";
 import { MOCK_ARTICLES } from "@/entities/article/data/mock-articles";
-import type { IArticle } from "@/entities/article/model/article.type";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

@@ -1,5 +1,7 @@
-import { HomeView } from "@/views/home/ui/home";
+"use client";
+
+import { TrendingView } from "@/views/trending";
 
 export default function TrendingPage() {
-  return <HomeView />;
+  return <TrendingView />;
 }

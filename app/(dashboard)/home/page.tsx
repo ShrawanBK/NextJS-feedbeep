@@ -1,4 +1,6 @@
-import { HomeView } from "@/views/home/ui/home";
+"use client";
+
+import { HomeView } from "@/views/home";
 
 export default function HomePage() {
   return <HomeView />;

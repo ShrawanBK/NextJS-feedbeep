@@ -1,0 +1,1 @@
+export { FeaturedArticle } from "./ui";

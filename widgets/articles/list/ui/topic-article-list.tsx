@@ -1,16 +1,18 @@
 "use client";
 
 import { useMemo } from "react";
-import { useArticles } from "@/entities/article/api/use-articles";
-import { useArticleFiltersStore } from "@/features/article/filter-articles";
-import { LoadMoreArticleButton } from "@/features/article/load-more-article";
+import { useArticles } from "@/entities/article";
+import { FeaturedArticle } from "@/widgets/articles";
+import {
+  LoadMoreArticleButton,
+  useArticleFiltersStore,
+} from "@/features/article";
 
 import { NoArticle } from "./no-article";
 import { GridView } from "./parts/grid-view";
 import { ListFilter } from "./parts/list-filter";
 import { ListHeader } from "./parts/list-header";
 import { ListSkeleton } from "./parts/list-skeleton";
-import { FeaturedArticle } from "../../featured-article/ui";
 
 interface Props {
   topicId?: string;

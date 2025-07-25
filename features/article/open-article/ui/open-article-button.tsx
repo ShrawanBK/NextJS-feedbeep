@@ -3,7 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { Button } from "@/shared/rui/button";
 import { toast } from "@/shared/hooks/use-toast";
 
-const OpenArticleButton = ({ articleId }: { articleId: string }) => {
+export const OpenArticleButton = ({ articleId }: { articleId: string }) => {
   const handleOpen = (articleId: string) => {
     toast({
       title: "Article opened for id " + articleId,
@@ -23,4 +23,4 @@ const OpenArticleButton = ({ articleId }: { articleId: string }) => {
   );
 };
 
-export default OpenArticleButton;
+OpenArticleButton.displayName = "OpenArticleButton";

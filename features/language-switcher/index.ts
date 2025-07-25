@@ -1,1 +1,1 @@
-export { default } from "./ui";
+export * as LanguageSwitcher from "./ui";
